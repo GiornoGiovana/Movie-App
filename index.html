@@ -8,16 +8,18 @@
 </head>
 <body>
 
+    <div class="header">
     <form>
-        <input data-input-movie class="movie-input">
-        <input data-input-year >
-        <input data-button type="button" value="search">
+        <label>Movie Name: </label>
+        <input data-input-movie class="movie-input" placeholder="Movie">
+        <input data-button type="button" value="search" class="btn">
     </form>
-    <div>
+    </div>
+    <div class="main-movie">
         <h3 data-title-movie></h3>
         <img src="" data-image-movie>
         <p data-year-movie></p>
-        <p data-plot-movie></p>
+        <p data-plot-movie class="plot-movie"></p>
     </div>
 
     <script src="index.js"></script>
