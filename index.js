@@ -1,29 +1,38 @@
 const API_KEY = "13ded7d2";
 
-const movie = document.querySelector("[data-input-movie]");
-const btn = document.querySelector("[data-button]");
-const movieTitle = document.querySelector("[data-title-movie]");
-const movieImage = document.querySelector("[data-image-movie]");
-const movieYear = document.querySelector("[data-year-movie]");
-const moviePlot = document.querySelector("[data-plot-movie]");
+const movieInput = document.querySelector("[data-movie-input]");
+const movieOption = document.querySelector("[data-movie-option]");
+const movieBtn = document.querySelector("[data-movie-btn]");
 
-btn.addEventListener("click", (event) => {
-  event.preventDefault();
-  getData(movie.value);
-  movie.value = "";
+const temp = document.querySelector("[data-movie-item]");
+const movieList = document.querySelector("[data-movie-list]");
+
+movieBtn.addEventListener("click", () => {
+  const title = movieInput.value;
+  const type = movieOption.options[movieOption.selectedIndex].value;
+  fetchData(title, type).then((res) => {
+    movieList.innerHTML = "";
+    res.forEach((movieData, index) => {
+      if (movieData.Poster !== "N/A" && index < 9) {
+        const moviCont = temp.content.cloneNode(true); //clonas los elemento del template
+        moviCont.querySelector("[data-movie-title]").innerHTML =
+          movieData.Title;
+        moviCont
+          .querySelector("[data-movie-image]")
+          .setAttribute("src", movieData.Poster);
+        moviCont.querySelector("[data-movie-year]").innerHTML = movieData.Year;
+
+        movieList.appendChild(moviCont);
+      }
+    });
+  });
 });
 
-window.onload = () => {
-  getData();
-};
-
-const getData = async (movie = "Joker") => {
-  const URL = `http://www.omdbapi.com/?apikey=${API_KEY}&t=${movie}&plot`;
-  const response = await fetch(URL);
+const fetchData = async (title = "", type = "") => {
+  const response = await fetch(
+    `http://www.omdbapi.com/?apikey=${API_KEY}&s=${title}&plot&type=${type}`
+  );
   const data = await response.json();
   console.log(data);
-  movieTitle.innerHTML = data.Title;
-  movieImage.setAttribute("src", data.Poster);
-  movieYear.innerHTML = data.Year;
-  moviePlot.innerHTML = data.Plot;
+  return data.Search;
 };

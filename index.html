@@ -9,18 +9,32 @@
 <body>
 
     <div class="header">
-    <form>
-        <label>Movie Name: </label>
-        <input data-input-movie class="movie-input" placeholder="Movie">
-        <input data-button type="button" value="search" class="btn">
-    </form>
+        <div class="logo">SZX</div>
+        <div class="main-input">
+            <input type="text" class="search-title" placeholder="Title" data-movie-input>
+        </div>
+        <div class="options">
+            <select class="select-type" name="type" data-movie-option>
+                <option value="movie" selected>Movie</option>
+                <option value="series">Series</option>
+            </select>
+        </div>
+        <div class="search-btn">
+            <input type="button" value="Search" class="btn" data-movie-btn>
+        </div>
     </div>
-    <div class="main-movie">
-        <h3 data-title-movie></h3>
-        <img src="" data-image-movie>
-        <p data-year-movie></p>
-        <p data-plot-movie class="plot-movie"></p>
-    </div>
+
+    <div class="movie-container" data-movie-list></div>
+
+    <template data-movie-item>
+        <div>
+        <div class="title" data-movie-title></div>
+        <div class="poster">
+            <img class="image" data-movie-image>
+        </div>
+        <div class="year" data-movie-year></div>
+        </div>
+    </template>
 
     <script src="index.js"></script>
 </body>
