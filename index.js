@@ -7,6 +7,8 @@ const movieBtn = document.querySelector("[data-movie-btn]");
 const temp = document.querySelector("[data-movie-item]");
 const movieList = document.querySelector("[data-movie-list]");
 
+const moreInfoMovieTemp = document.querySelector("[data-more]");
+
 movieBtn.addEventListener("click", () => {
   const title = movieInput.value;
   const type = movieOption.options[movieOption.selectedIndex].value;
@@ -27,20 +29,11 @@ movieBtn.addEventListener("click", () => {
   movieInput.value = "";
 });
 
-const fetchData = async (title = "", type = "") => {
-  const response = await fetch(
-    `http://www.omdbapi.com/?apikey=${API_KEY}&s=${title}&plot&type=${type}`
-  );
-  const data = await response.json();
-  console.log(data);
-  return data.Response === "True" ? data.Search : data;
-};
-
 const sendDataTemplate = (movie) => {
   movieList.innerHTML = "";
   movie.forEach((movieData, index) => {
     if (movieData.Poster !== "N/A" && index < 8) {
-      const moviCont = temp.content.cloneNode(true); //clonas los elemento del template
+      const moviCont = temp.content.cloneNode(true); //clonar los elemento del template
       moviCont.getElementById("movieID").innerHTML = movieData.imdbID;
       moviCont.querySelector("[data-movie-title]").innerHTML = movieData.Title;
       moviCont
@@ -57,13 +50,37 @@ const dropMovieInfo = (movies) => {
   if (movies.hasChildNodes()) {
     for (let i = 0; i < movies.childElementCount; i++) {
       const movie = movies.children[i];
+      let isClicked = false;
       movie.addEventListener("click", () => {
         let myMovieID = movie.children[0].textContent;
-        console.log(myMovieID);
-        fetchSelectedMovie(myMovieID).then((mov) => console.log(mov));
+
+        if (!isClicked) {
+          isClicked = true;
+          fetchSelectedMovie(myMovieID).then((mov) => {
+            const moreInfo = movie.lastElementChild;
+            const movieMore = moreInfoMovieTemp.content.cloneNode(true);
+            movieMore.querySelector("[data-movie-actors]").innerHTML =
+              "Actors: " + mov.Actors;
+            movieMore.querySelector("[data-movie-director]").innerHTML =
+              "Director(s): " + mov.Director;
+            movieMore.querySelector("[data-movie-plot]").innerHTML =
+              "Synopsis: " + mov.Plot;
+
+            moreInfo.appendChild(movieMore);
+            moreInfo.style.display = "block";
+          });
+        }
       });
     }
   }
+};
+
+const fetchData = async (title = "", type = "") => {
+  const response = await fetch(
+    `http://www.omdbapi.com/?apikey=${API_KEY}&s=${title}&plot&type=${type}`
+  );
+  const data = await response.json();
+  return data.Response === "True" ? data.Search : data;
 };
 
 const fetchSelectedMovie = async (id) => {

@@ -104,3 +104,7 @@ body {
  #movieID {
      display: none;
  }
+
+ .more-info {
+     display: none;
+ }
