@@ -51,12 +51,14 @@ const dropMovieInfo = (movies) => {
     for (let i = 0; i < movies.childElementCount; i++) {
       const movie = movies.children[i];
       let isClicked = false;
+      let showContent = false;
       movie.addEventListener("click", () => {
         let myMovieID = movie.children[0].textContent;
 
         if (!isClicked) {
           isClicked = true;
           fetchSelectedMovie(myMovieID).then((mov) => {
+            console.log(mov);
             const moreInfo = movie.lastElementChild;
             const movieMore = moreInfoMovieTemp.content.cloneNode(true);
             movieMore.querySelector("[data-movie-actors]").innerHTML =
@@ -67,8 +69,14 @@ const dropMovieInfo = (movies) => {
               "Synopsis: " + mov.Plot;
 
             moreInfo.appendChild(movieMore);
-            moreInfo.style.display = "block";
           });
+        }
+        if (!showContent) {
+          showContent = true;
+          movie.lastElementChild.style.display = "block";
+        } else {
+          showContent = false;
+          movie.lastElementChild.style.display = "none";
         }
       });
     }
