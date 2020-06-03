@@ -31,9 +31,11 @@ movieBtn.addEventListener("click", () => {
 
 const sendDataTemplate = (movie) => {
   movieList.innerHTML = "";
+
   movie.forEach((movieData, index) => {
     if (movieData.Poster !== "N/A" && index < 8) {
       const moviCont = temp.content.cloneNode(true); //clonar los elemento del template
+
       moviCont.getElementById("movieID").innerHTML = movieData.imdbID;
       moviCont.querySelector("[data-movie-title]").innerHTML = movieData.Title;
       moviCont
@@ -52,13 +54,13 @@ const dropMovieInfo = (movies) => {
       const movie = movies.children[i];
       let isClicked = false;
       let showContent = false;
+
       movie.addEventListener("click", () => {
         let myMovieID = movie.children[0].textContent;
 
         if (!isClicked) {
           isClicked = true;
           fetchSelectedMovie(myMovieID).then((mov) => {
-            console.log(mov);
             const moreInfo = movie.lastElementChild;
             const movieMore = moreInfoMovieTemp.content.cloneNode(true);
             movieMore.querySelector("[data-movie-actors]").innerHTML =
@@ -71,12 +73,13 @@ const dropMovieInfo = (movies) => {
             moreInfo.appendChild(movieMore);
           });
         }
+
         if (!showContent) {
           showContent = true;
-          movie.lastElementChild.style.display = "block";
+          movie.lastElementChild.classList.add("show");
         } else {
           showContent = false;
-          movie.lastElementChild.style.display = "none";
+          movie.lastElementChild.classList.remove("show");
         }
       });
     }

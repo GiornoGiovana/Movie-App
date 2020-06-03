@@ -108,3 +108,15 @@ body {
  .more-info {
      display: none;
  }
+
+ .more-info.show {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 300px;
+    margin: 0 .5rem 0 .5rem;
+  }
+
+  .actors, .director {
+    margin-bottom: 5px;
+  }
